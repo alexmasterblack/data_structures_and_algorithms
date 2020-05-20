@@ -9,7 +9,7 @@ vector<vector<char>> result;
 vector<int> count_tr;
 vector<string> answers;
 
-void place_repeat(char *a, int n, int k, int h = 0) {
+void gen(char *signs, int n, int k, int h = 0) {
     if (h == k) {
         for (int i = 0; i < answers.size(); i++) {
             int count = 0;
@@ -24,8 +24,8 @@ void place_repeat(char *a, int n, int k, int h = 0) {
         }
     } else {
         for (int i = 0; i < n; i++) {
-            str.push_back(a[i]);
-            place_repeat(a, n, k, h + 1);
+            str.push_back(signs[i]);
+            gen(signs, n, k, h + 1);
             str.pop_back();
         }
     }
@@ -34,7 +34,7 @@ void place_repeat(char *a, int n, int k, int h = 0) {
 int main() {
     ifstream fin("input.txt");
     ofstream fout("output.txt");
-    char a[3] = "+-";
+    char signs[3] = "+-";
 
     int shush, num_quest;
     fin >> shush >> num_quest;
@@ -48,7 +48,7 @@ int main() {
         count_tr.push_back(sup_count);
     }
 
-    place_repeat(a, 2, num_quest);
+    gen(signs, 2, num_quest);
 
     for (int i = 0; i < 1; i++) {
         for (int j = 0; j < num_quest; j++) {
