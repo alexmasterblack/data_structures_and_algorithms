@@ -15,29 +15,15 @@ string str_coords(int row, int col) {
 }
 
 void check(char **board, int row, int col, int number = 0) {
-    if (board[row - 1][col - 1] == 'O') {
-        board[row - 1][col - 1] = '.';
-        support[number] = str_coords(row, col);
-        check(board, row - 2, col - 2, number + 1);
-        board[row - 1][col - 1] = 'O';
-    }
-    if (board[row - 1][col + 1] == 'O') {
-        board[row - 1][col + 1] = '.';
-        support[number] = str_coords(row, col);
-        check(board, row - 2, col + 2, number + 1);
-        board[row - 1][col + 1] = 'O';
-    }
-    if (board[row + 1][col - 1] == 'O') {
-        board[row + 1][col - 1] = '.';
-        support[number] = str_coords(row, col);
-        check(board, row + 2, col - 2, number + 1);
-        board[row + 1][col - 1] = 'O';
-    }
-    if (board[row + 1][col + 1] == 'O') {
-        board[row + 1][col + 1] = '.';
-        support[number] = str_coords(row, col);
-        check(board, row + 2, col + 2, number + 1);
-        board[row + 1][col + 1] = 'O';
+    int s_row[4] = {1, 1, -1, -1};
+    int s_col[4] = {-1, 1, -1, 1};
+    for (int i = 0; i < 4; i++) {
+        if (board[row + s_row[i]][col + s_col[i]] == 'O') {
+            board[row + s_row[i]][col + s_col[i]] = '.';
+            support[number] = str_coords(row, col);
+            check(board, row + 2 * s_row[i], col + 2 * s_col[i], number + 1);
+            board[row + s_row[i]][col + s_col[i]] = 'O';
+        }
     }
 
     if (number > best_number) {
@@ -78,10 +64,10 @@ int main() {
 
     if (result.empty())
         fout << "Impossible";
-    else{
-        for (const auto & element : result)
+    else {
+        for (const auto &element : result)
             if (!element.empty())
                 fout << element << '-';
-            fout << str_coords(sup_row, sup_col);
+        fout << str_coords(sup_row, sup_col);
     }
 }
