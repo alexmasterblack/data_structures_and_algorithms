@@ -10,8 +10,7 @@ vector<pair<pair<int, int>, int>> pairs;
 
 void suffix_array(int classes[], string word) {
     //рассматриваем подстроки длины 2^k
-    int step = 2;
-    for (int i = step / 2; i < word.size(); i *= 2) {
+    for (int i = 1; i < word.size(); i *= 2) {
         pairs.clear();
         for (int j = 0; j < word.size(); j++) {
             //первая подстока, вторая подстрока и их индекс
@@ -78,24 +77,22 @@ int main() {
     counting_sort(word);
     //строка в инпуте будет лежать по индексу ноль, так как она будет первой
     //но так как пары в лексикографическом порядке, то не обязательно она там будет первая
-    vector<int> finally;
-    int index = 0;
+    vector<int> result;
     for (int i = 0; i < pairs.size(); i++) {
         //нужно учесть, что подстроки могут быть идентичными, поэтому для правильного вывода надо учесть повторы
         if (i > 0 && pairs[i].first.first == pairs[i - 1].first.first &&
             pairs[i].first.second == pairs[i - 1].first.second)
-            index += 1;
+            continue;
         else {
-            finally.push_back(pairs[i].second);
-            index = 0;
+            result.push_back(pairs[i].second);
         }
 
     }
 
     //нахожу нулевой суффик и выводу индекс
-    if (!finally.empty()) {
-        for (int i = 0; i < finally.size(); i++) {
-            if (finally[i] == 0)
+    if (!result.empty()) {
+        for (int i = 0; i < result.size(); i++) {
+            if (result[i] == 0)
                 fout << i;
         }
     } else {
