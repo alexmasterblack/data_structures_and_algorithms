@@ -29,7 +29,7 @@ class AvlTree {
     }
 
     node *right_rotation(node *top) {
-        node *new_top = top->left; //новым узлом становится левый потомок
+        node *new_top = top->left;
         top->left = new_top->right;
         new_top->right = top;
         top->height = max(height(top->left), height(top->right)) + 1;
@@ -38,16 +38,15 @@ class AvlTree {
     }
 
     node *left_rotation(node *top) {
-        node *new_top = top->right; //новым узлом становится правый потомок
-        top->right = new_top->left; //левые потомки  нового узла становятся правыми старого
-        new_top->left = top; //старая вершина теперь левый потомок новой
+        node *new_top = top->right;
+        top->right = new_top->left;
+        new_top->left = top;
         top->height = max(height(top->left), height(top->right)) + 1;
         new_top->height = max(height(new_top->left), height(new_top->right)) + 1;
         return new_top;
     }
 
     node *balance_check(node *top) {
-        //высота вершины
         top->height = max(height(top->left), height(top->right)) + 1;
         if (balance(top) == -2) {
             if (balance(top->left) == -1)
@@ -94,6 +93,9 @@ class AvlTree {
         if (top == NULL) {
             return top;
         }
+
+        node * temp = top;
+
         if (key < top->value) {
             top->left = pop(key, top->left);
         } else if (key > top->value) {
@@ -102,11 +104,16 @@ class AvlTree {
             top->value = minumum(top->right)->value;
             top->right = pop(minumum(top->right)->value, top->right);
         } else {
-            if (top->left != NULL)
-                return balance_check(top->left);
-            else if (top->right != NULL)
-                return balance_check(top->right);
-            else return NULL;
+            if (top->left != NULL) {
+                top = top->left;
+                free(temp);
+            } else if (top->right != NULL) {
+                top = top->right;
+                free(temp);
+            } else {
+                free(temp);
+                return NULL;
+            }
         }
         return balance_check(top);
     }
@@ -122,6 +129,7 @@ class AvlTree {
             return left_size + right_size + 1;
         }
     }
+
 
 public:
     AvlTree() {
