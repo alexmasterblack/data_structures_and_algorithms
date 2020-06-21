@@ -5,8 +5,10 @@
 
 using namespace std;
 
+//cоздаю структуру, которая будет хранить начало, конец и число страниц в книге
 typedef pair<pair<long long, long long>, long long> left_right_pages;
 
+//вектор с книгами
 vector<left_right_pages> books;
 long long last_day = 0;
 int number_of_books;
@@ -120,6 +122,7 @@ bool checking(long long best_number) {
 long long binary_search(long long left, long long right, long long middle_pages) {
     //нам нужно найти такое минимальное количество страниц, что Петя сможет прочитать все книги
     while (left <= right) {
+        //если все книги прочтены, то сдвигаем влево, если нет, то вправо, тем самым находим лучший случай
         if (checking(middle_pages)) {
             right = middle_pages - 1;
         } else {
