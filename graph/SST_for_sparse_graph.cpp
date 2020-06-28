@@ -24,17 +24,22 @@ void dfs(int v) {
 }
 
 void prim(int vertices) {
+    //завели массив юзд, чтобы хранить вершины, в которые не можем походить
     vector<bool> used_two(vertices + 1, false);
     vector<int> min_edge(vertices + 1, max);
     min_edge[1] = 0;
-
+    
+    //хранятся все рассматриваемые вершины
     set<pair<int, int>> score;
     score.insert(make_pair(0, 1));
-
+    
+    //пока скор не пуст
     while (!score.empty()) {
+        //достаем минимальную вершину и удаляем ее, чтобы не 
         auto top = *score.begin();
         score.erase(score.begin());
-
+        
+        //идем по смежным вершинам, кладем их в скор, обновляем минимальные значения
         for (auto to : G[top.second]) {
             if (!used_two[to.first] && to.second < min_edge[to.first]) {
                 score.erase(make_pair(min_edge[to.first], to.first));
@@ -42,6 +47,7 @@ void prim(int vertices) {
                 score.insert(make_pair(min_edge[to.first], to.first));
             }
         }
+        //после того как рассмотрели все смежные с вершиной вершины, помечаем ее, чтобы потом в нее не походить
         used_two[top.second] = true;
     }
 
